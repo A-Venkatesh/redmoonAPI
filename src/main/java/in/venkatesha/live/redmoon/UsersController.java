@@ -5,6 +5,7 @@ import in.venkatesha.live.redmoon.repositories.UsersRepository;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins="http://localhost:4200",allowedHeaders="*")
 @RequestMapping("/users")
 public class UsersController {
 	@Autowired
@@ -29,16 +31,18 @@ public class UsersController {
 	  }
 	 
 	  @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	  public void modifyUserById(@PathVariable("id") ObjectId id, @Valid @RequestBody Users pets) {
-	    pets.set_id(id);
-	    repository.save(pets);
+	  public void modifyUserById(@PathVariable("id") ObjectId id, @Valid @RequestBody Users users) {
+	    users.set_id(id);
+	    repository.save(users);
 	  }
 	 
-	  @RequestMapping(value = "/", method = RequestMethod.POST)
-	  public Users createUser(@Valid @RequestBody Users pets) {
-	    pets.set_id(ObjectId.get());
-	    repository.save(pets);
-	    return pets;
+	  @RequestMapping(value = "/add", method = RequestMethod.POST)
+	  public Users createUser(@Valid @RequestBody Users users) {
+		  System.out.println("ssssssssss");
+	    users.set_id(ObjectId.get());
+	    System.out.println("jsjnjs");
+	    repository.save(users);
+	    return users;
 	  }
 	 
 	  @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

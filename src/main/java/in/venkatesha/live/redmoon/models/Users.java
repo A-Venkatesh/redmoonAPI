@@ -15,7 +15,6 @@ public class Users {
 	public Users() {
 		// TODO Auto-generated constructor stub
 	}
-
 	public Users(ObjectId _id, String productName, String productDescription, String productPrice) {
 		super();
 		this._id = _id;
@@ -23,7 +22,7 @@ public class Users {
 		ProductDescription = productDescription;
 		ProductPrice = productPrice;
 	}
-
+	
 	public String get_id() {
 		return _id.toHexString();
 	}
