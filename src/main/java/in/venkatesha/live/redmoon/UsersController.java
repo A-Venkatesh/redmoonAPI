@@ -38,9 +38,9 @@ public class UsersController {
 	 
 	  @RequestMapping(value = "/add", method = RequestMethod.POST)
 	  public Users createUser(@Valid @RequestBody Users users) {
-		  System.out.println("ssssssssss");
+		//  System.out.println("ssssssssss");
 	    users.set_id(ObjectId.get());
-	    System.out.println("jsjnjs");
+	    //System.out.println("jsjnjs");
 	    repository.save(users);
 	    return users;
 	  }

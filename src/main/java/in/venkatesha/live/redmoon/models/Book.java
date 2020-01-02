@@ -7,6 +7,7 @@ public class Book {
 	String Publisher;
 	String Binding;
 	String Url;
+	String imgUrl;
 	public Book() {
 		// TODO Auto-generated constructor stub
 	}
@@ -47,9 +48,21 @@ public class Book {
 		return Url;
 	}
 
-	public void setUrl(String url) {
+	public void setUrlISDB(String url) {
 		
 		Url = url.substring(url.indexOf("\"")+1, url.lastIndexOf("\""));
+	}
+public void setUrl(String url) {
+		
+		Url=url;
+	}
+
+	public String getImgUrl() {
+		return imgUrl;
+	}
+
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
 	}
 
 }

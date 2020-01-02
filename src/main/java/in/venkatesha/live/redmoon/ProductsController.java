@@ -1,5 +1,6 @@
 package in.venkatesha.live.redmoon;
 
+import in.venkatesha.live.redmoon.autoFiller.Wild;
 import in.venkatesha.live.redmoon.models.Products;
 import in.venkatesha.live.redmoon.repositories.ProductsRepository;
 
@@ -20,6 +21,8 @@ import java.util.List;
 public class ProductsController {
 	@Autowired
 	  private ProductsRepository repository;
+	private Wild wild;
+
 
 	  @RequestMapping(value = "/", method = RequestMethod.GET)
 	  public List<Products> getAllProducts() {
@@ -48,5 +51,10 @@ public class ProductsController {
 	  @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	  public void deleteProduct(@PathVariable ObjectId id) {
 	    repository.delete(repository.findBy_id(id));
+	  }
+	  
+	  @RequestMapping(value = "/key/{keyword}", method = RequestMethod.GET)
+	  public String getProductSuggestion(@PathVariable("keyword") String keyword) {
+	    return wild.suggestion(keyword);
 	  }
 	}
