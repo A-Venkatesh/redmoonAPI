@@ -1,8 +1,10 @@
 package in.venkatesha.live.redmoon;
 
-import in.venkatesha.live.redmoon.autoFiller.Wild;
+
 import in.venkatesha.live.redmoon.models.Products;
 import in.venkatesha.live.redmoon.repositories.ProductsRepository;
+import in.venkatesha.live.redmoon.service.ProductService;
+import in.venkatesha.live.redmoon.service.Scrapper;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +22,9 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductsController {
 	@Autowired
+	 ProductService productService;
 	  private ProductsRepository repository;
-	private Wild wild;
+	
 
 
 	  @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -55,6 +58,9 @@ public class ProductsController {
 	  
 	  @RequestMapping(value = "/key/{keyword}", method = RequestMethod.GET)
 	  public String getProductSuggestion(@PathVariable("keyword") String keyword) {
-	    return wild.suggestion(keyword);
+		  
+		  System.out.println("***************");
+		  System.out.println(keyword);
+	    return productService.suggestion(keyword);
 	  }
 	}

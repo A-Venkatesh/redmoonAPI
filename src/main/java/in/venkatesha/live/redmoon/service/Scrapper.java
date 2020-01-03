@@ -1,11 +1,14 @@
 /**
  * 
  */
-package in.venkatesha.live.redmoon.autoFiller;
+package in.venkatesha.live.redmoon.service;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+
+import org.springframework.stereotype.Service;
+
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.DomNode;
 import com.gargoylesoftware.htmlunit.html.DomNodeList;
@@ -18,14 +21,20 @@ import in.venkatesha.live.redmoon.models.Book;
  * @author Anbu
  *
  */
-public class Wild {
+@Service
+public class Scrapper implements ProductService {
 static String amazonURL = "https://www.amazon.in";
 static String amazonKey = "/s?k=";
 static String amazonSufix ="&i=stripbooks&ref=nb_sb_noss_2";
+
+
+@Override
 	public String suggestion(String searchKey) {
 		String json ="";
 		try {
-			json = new Wild().fromAmazon(amazonURL+amazonKey+URLEncoder.encode(searchKey, "UTF-8")+amazonSufix);
+			System.out.println("CMAE HERE"+amazonURL+amazonKey+URLEncoder.encode(searchKey, "UTF-8")+amazonSufix);
+			
+			json = new Scrapper().fromAmazon(amazonURL+amazonKey+URLEncoder.encode(searchKey, "UTF-8")+amazonSufix);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -107,7 +116,8 @@ static String amazonSufix ="&i=stripbooks&ref=nb_sb_noss_2";
 		// TODO Auto-generated method stub
 		HtmlPage hp = getHTMLofPage(URL);
 		ArrayList<Book> bookList = new ArrayList<Book>();
-		// System.out.println(hp.asXml());
+		System.out.println("CAME HERE DA");
+		//System.out.println(hp.asXml());
 
 		DomNodeList<DomNode> dnl = hp.querySelectorAll("div[data-asin]");
 		for (DomNode dn : dnl) {
