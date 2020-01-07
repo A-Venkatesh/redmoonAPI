@@ -1,5 +1,7 @@
 package in.venkatesha.live.redmoon.models;
 
+import java.util.List;
+
 public class Book {
 
 	String Authors;
@@ -8,6 +10,11 @@ public class Book {
 	String Binding;
 	String Url;
 	String imgUrl;
+	String mrp;
+	String price;
+	String productDetail;
+	String productDescription;
+	List<String> segment ;
 	public Book() {
 		// TODO Auto-generated constructor stub
 	}
@@ -63,6 +70,46 @@ public void setUrl(String url) {
 
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
+	}
+
+	public String getMrp() {
+		return mrp;
+	}
+
+	public void setMrp(String mrp) {
+		this.mrp = mrp;
+	}
+
+	public String getPrice() {
+		return price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
+	}
+
+	public String getProductDetail() {
+		return productDetail;
+	}
+
+	public void setProductDetail(String productDetail) {
+		this.productDetail = productDetail;
+	}
+
+	public String getProductDescription() {
+		return productDescription;
+	}
+
+	public void setProductDescription(String productDescription) {
+		this.productDescription = productDescription;
+	}
+
+	public List<String> getSegment() {
+		return segment;
+	}
+
+	public void setSegment(List<String> segment) {
+		this.segment = segment;
 	}
 
 }

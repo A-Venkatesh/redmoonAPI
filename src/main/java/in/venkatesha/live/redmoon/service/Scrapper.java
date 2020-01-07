@@ -6,6 +6,7 @@ package in.venkatesha.live.redmoon.service;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.DomNode;
 import com.gargoylesoftware.htmlunit.html.DomNodeList;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import in.venkatesha.live.redmoon.models.Book;
@@ -32,9 +34,14 @@ static String amazonSufix ="&i=stripbooks&ref=nb_sb_noss_2";
 	public String suggestion(String searchKey) {
 		String json ="";
 		try {
+			if(!searchKey.contains("https://www.amazon.in")) {
 			System.out.println("CMAE HERE"+amazonURL+amazonKey+URLEncoder.encode(searchKey, "UTF-8")+amazonSufix);
 			
 			json = new Scrapper().fromAmazon(amazonURL+amazonKey+URLEncoder.encode(searchKey, "UTF-8")+amazonSufix);
+			}
+			else {
+				json = new Scrapper().contentPage(searchKey);
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -172,6 +179,82 @@ static String amazonSufix ="&i=stripbooks&ref=nb_sb_noss_2";
 			return null;
 		}
 
+	}
+	
+	
+	private String contentPage(String URL){
+		HtmlPage hp = getHTMLofPage(URL);
+		Book book = new Book();
+		String price = hp.querySelector("span[class=\"a-size-medium a-color-price inlineBlock-display offer-price a-text-normal price3P\"]").asText();
+		//System.out.println(price.substring(price.indexOf('?')+2));
+		book.setPrice(price.substring(price.indexOf('?')+2));
+		String mrp = hp.querySelector("span[class=\"a-color-secondary a-text-strike\"]").asText();
+		book.setMrp(mrp.substring(mrp.indexOf('?')+2));
+		
+		
+		String pd = hp.querySelector("div[id=\"productDescription\"]").asXml();
+		//System.out.println(pd);
+		book.setProductDescription(pd);
+		
+	
+		//String cat = hp.querySelector("li[id=\"SalesRank\"]").asXml();
+		//System.out.println(cat);
+		//Node child = hp.querySelector("li[id=\"SalesRank\"]");
+		DomNodeList<DomNode> dm = hp.querySelector("div[id=\"detail_bullets_id\"]").querySelectorAll("li");
+		//String prod = hp.querySelector("div[id=\"detail_bullets_id\"]").asXml().replace(cat, "");
+//		Node dm2 = dm.removeChild(dm.getLastChild());
+//		System.out.println(dm.getLastChild().getTextContent());
+		StringBuilder sb = new StringBuilder("<ul>");
+		for(DomNode dmm : dm) {
+			
+			if(dmm.asText().contains("Average Customer"))break;
+			else {
+				//System.out.println(dmm.asXml());
+				
+				//System.out.println("**********************");
+				sb.append(dmm.asXml());
+			}
+		}
+		sb.append("</ul>");
+		
+		book.setProductDetail(sb.toString());
+		
+		String cat = hp.querySelector("div[id=\"detail_bullets_id\"]").querySelector("ul").querySelector("ul").asText();
+		//System.out.println(cat);
+		String cats[] = cat.split("\n");
+		List<String> list = new ArrayList<String>();
+		for(String temp:cats) {
+			list.add(temp.substring(temp.indexOf("in")+2).trim());
+		}
+		
+		book.setSegment(list);
+		
+		
+//		DomNodeList<DomNode> de = hp.querySelector("div[id=\"imageBlockOuter\"]").querySelectorAll("img");
+//		for(DomNode dee : de) {
+//			//System.out.println(dee);
+//		}
+		
+		DomNode h =hp.querySelector("div[id=\"booksImageBlock_feature_div\"]").querySelector("script");
+		//System.out.println();
+		String allcontent[] =h.asXml().split("\n");
+		String ImageURL = "";
+		for(String temp:allcontent) {
+			if(temp.contains("mainUrl")) {
+				ImageURL = temp.substring(temp.indexOf("["),temp.length() -1);
+				System.out.println(ImageURL);
+				Gson sd = new Gson();
+
+				
+			}
+		}
+
+		book.setImgUrl(ImageURL);
+
+		System.out.println("--------------------------------------------------------------");
+		String json = new GsonBuilder().disableHtmlEscaping().create().toJson(book);
+		return json;
+		
 	}
 
 }
