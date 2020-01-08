@@ -63,4 +63,10 @@ public class ProductsController {
 		  System.out.println(keyword);
 	    return productService.suggestion(keyword);
 	  }
+	  
+	  @RequestMapping(value = "/getContent", method = RequestMethod.GET)
+	  public String getProductContent(@RequestBody String url) {
+		  System.out.println("***************");
+	    return productService.suggestion(url);
+	  }
 	}
