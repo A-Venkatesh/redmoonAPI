@@ -185,14 +185,35 @@ static String amazonSufix ="&i=stripbooks&ref=nb_sb_noss_2";
 	private String contentPage(String URL){
 		HtmlPage hp = getHTMLofPage(URL);
 		Book book = new Book();
-		String price = hp.querySelector("span[class=\"a-size-medium a-color-price inlineBlock-display offer-price a-text-normal price3P\"]").asText();
+		String price;
+		try {
+			price = hp.querySelector("span[class=\"a-size-medium a-color-price inlineBlock-display offer-price a-text-normal price3P\"]").asText();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			price = hp.querySelector("span[id=\"a-autoid-8\"]").asText();
+System.out.println(price);
+			
+		}
 		//System.out.println(price.substring(price.indexOf('?')+2));
 		book.setPrice(price.substring(price.indexOf('?')+2));
-		String mrp = hp.querySelector("span[class=\"a-color-secondary a-text-strike\"]").asText();
+		String mrp;
+		try {
+			mrp = hp.querySelector("span[class=\"a-color-secondary a-text-strike\"]").asText();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			mrp = price;
+		}
 		book.setMrp(mrp.substring(mrp.indexOf('?')+2));
 		
 		
-		String pd = hp.querySelector("div[id=\"productDescription\"]").asXml();
+		String pd;
+		
+		try {
+			pd= hp.querySelector("div[id=\"productDescription\"]").asXml();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			pd="";
+					}
 		//System.out.println(pd);
 		book.setProductDescription(pd);
 		
