@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import javax.validation.Valid;
 import java.util.List;
 
@@ -36,7 +40,7 @@ public class ProductsController {
 	    return repository.findBy_id(id);
 	  }
 	 
-	  @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	  @RequestMapping(value = "/", method = RequestMethod.PUT)
 	  public void modifyProductById(@PathVariable("id") ObjectId id, @Valid @RequestBody Products products) {
 	    products.set_id(id);
 	    repository.save(products);
@@ -47,6 +51,8 @@ public class ProductsController {
 		  System.out.println("ssssssssss");
 	    products.set_id(ObjectId.get());
 	    System.out.println("jsjnjs");
+	    String temp =new GsonBuilder().disableHtmlEscaping().create().toJson(products);
+	    System.out.println(temp);
 	    repository.save(products);
 	    return products;
 	  }
