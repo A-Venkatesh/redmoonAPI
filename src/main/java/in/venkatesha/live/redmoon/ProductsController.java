@@ -27,6 +27,7 @@ import java.util.List;
 public class ProductsController {
 	@Autowired
 	 ProductService productService;
+	@Autowired
 	  private ProductsRepository repository;
 	
 
